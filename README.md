@@ -24,7 +24,7 @@ export {f}
 
 Each function in this library is tested thoroughly and is not deoptimized by v8 (except some logging and comparison functions that can't be implemented without deoptimizations). This library implements its own test suite that is designed for randomized testing and inspecting performance issues.
 
-* `node --trace-deop` and `node --trace-opt`
+* `node --trace-deopt` and `node --trace-opt`
 * https://youtu.be/IFWulQnM5E0 Good intro video
 * https://github.com/thlorenz/v8-perf
 * https://github.com/thlorenz/deoptigate - A great tool for investigating deoptimizations
@@ -1387,6 +1387,29 @@ export const testMyFirstTest = tc => {
 <b><code>websocket.WebsocketClient#connect()</code></b><br>
 </dl>
 </details>
+
+### React-Native support
+
+React-native apps should be able to use lib0. You need to install a polyfill for
+webcrypto and enable package-exports support in react-native:
+
+```sh
+# install polyfill
+npm i isomorphic-webcrypto
+```
+
+Add this to `metro.config.js` [(see docs)](https://reactnative.dev/blog/2023/06/21/package-exports-support):
+
+```js
+const config = {
+  // ...
+  resolver: {
+    unstable_enablePackageExports: true
+  }
+}
+```
+
+
 
 ### License
 

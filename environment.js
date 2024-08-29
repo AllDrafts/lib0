@@ -10,10 +10,10 @@ import * as conditions from './conditions.js'
 import * as storage from './storage.js'
 import * as f from './function.js'
 
-/* c8 ignore next */
+/* c8 ignore next 2 */
 // @ts-ignore
-export const isNode = typeof process !== 'undefined' && process.release &&
-  /node|io\.js/.test(process.release.name)
+export const isNode = typeof process !== 'undefined' && process.release && /node|io\.js/.test(process.release.name) && Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]'
+
 /* c8 ignore next */
 export const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && !isNode
 /* c8 ignore next 3 */
@@ -94,7 +94,7 @@ export const getParam = (name, defaultVal) =>
 /* c8 ignore next 4 */
 export const getVariable = (name) =>
   isNode
-    ? conditions.undefinedToNull(process.env[name.toUpperCase()])
+    ? conditions.undefinedToNull(process.env[name.toUpperCase().replaceAll('-', '_')])
     : conditions.undefinedToNull(storage.varStorage.getItem(name))
 
 /**
@@ -104,6 +104,17 @@ export const getVariable = (name) =>
 /* c8 ignore next 2 */
 export const getConf = (name) =>
   computeParams().get('--' + name) || getVariable(name)
+
+/**
+ * @param {string} name
+ * @return {string}
+ */
+/* c8 ignore next 5 */
+export const ensureConf = (name) => {
+  const c = getConf(name)
+  if (c == null) throw new Error(`Expected configuration "${name.toUpperCase().replaceAll('-', '_')}"`)
+  return c
+}
 
 /**
  * @param {string} name
@@ -121,10 +132,21 @@ const forceColor = isNode &&
   f.isOneOf(process.env.FORCE_COLOR, ['true', '1', '2'])
 
 /* c8 ignore start */
-export const supportsColor = !hasParam('no-colors') &&
-  (!isNode || process.stdout?.isTTY || forceColor) && (
-  !isNode || hasParam('color') || forceColor ||
+/**
+ * Color is enabled by default if the terminal supports it.
+ *
+ * Explicitly enable color using `--color` parameter
+ * Disable color using `--no-color` parameter or using `NO_COLOR=1` environment variable.
+ * `FORCE_COLOR=1` enables color and takes precedence over all.
+ */
+export const supportsColor = forceColor || (
+  !hasParam('--no-colors') && // @todo deprecate --no-colors
+  !hasConf('no-color') &&
+  (!isNode || process.stdout.isTTY) && (
+    !isNode ||
+    hasParam('--color') ||
     getVariable('COLORTERM') !== null ||
     (getVariable('TERM') || '').includes('color')
+  )
 )
 /* c8 ignore stop */

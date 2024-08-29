@@ -1,4 +1,3 @@
-
 import { Xoroshiro128plus } from './prng/Xoroshiro128plus.js'
 import * as prng from './prng.js'
 import { MAX_SAFE_INTEGER } from './number.js'
@@ -13,10 +12,10 @@ import * as math from './math.js'
 const genTestData = 5000
 
 /**
- * @param {t.TestCase} tc
+ * @param {t.TestCase} _tc
  * @param {prng.PRNG} gen
  */
-const runGenTest = (tc, gen) => {
+const runGenTest = (_tc, gen) => {
   t.group('next - average distribution', () => {
     let sum = 0
     for (let i = 0; i < genTestData; i++) {
@@ -208,9 +207,9 @@ export const testGeneratorMt19937 = tc => {
 /* c8 ignore next */
 /**
  * @param {prng.PRNG} gen
- * @param {t.TestCase} tc
+ * @param {t.TestCase} _tc
  */
-const printDistribution = (gen, tc) => {
+const printDistribution = (gen, _tc) => {
   const DIAMETER = genTestData / 50
   const canvas = dom.canvas(DIAMETER * 3, DIAMETER)
   const ctx = canvas.getContext('2d')

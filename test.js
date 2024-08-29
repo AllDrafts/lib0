@@ -2,12 +2,15 @@ import { runTests } from './testing.js'
 import * as array from './array.test.js'
 import * as broadcastchannel from './broadcastchannel.test.js'
 import * as crypto from './crypto.test.js'
+import * as rabin from './hash/rabin.test.js'
+import * as sha256 from './hash/sha256.test.js'
 import * as logging from './logging.test.js'
 import * as string from './string.test.js'
 import * as encoding from './encoding.test.js'
 import * as diff from './diff.test.js'
 import * as testing from './testing.test.js'
 import * as indexeddb from './indexeddb.test.js'
+import * as indexeddbV2 from './indexeddbV2.test.js'
 import * as prng from './prng.test.js'
 import * as log from 'lib0/logging'
 import * as statistics from './statistics.test.js'
@@ -20,6 +23,8 @@ import * as eventloop from './eventloop.test.js'
 import * as time from './time.test.js'
 import * as pair from './pair.test.js'
 import * as object from './object.test.js'
+import * as observable from './observable.test.js'
+import * as pledge from './pledge.test.js'
 import * as math from './math.test.js'
 import * as number from './number.test.js'
 import * as buffer from './buffer.test.js'
@@ -44,12 +49,15 @@ runTests({
   array,
   broadcastchannel,
   crypto,
+  rabin,
+  sha256,
   logging,
   string,
   encoding,
   diff,
   testing,
   indexeddb,
+  indexeddbV2,
   prng,
   statistics,
   binary,
@@ -61,6 +69,8 @@ runTests({
   time,
   pair,
   object,
+  observable,
+  pledge,
   math,
   number,
   buffer,

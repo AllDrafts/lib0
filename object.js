@@ -47,10 +47,17 @@ export const map = (obj, f) => {
 }
 
 /**
+ * @deprecated use object.size instead
  * @param {Object<string,any>} obj
  * @return {number}
  */
 export const length = obj => keys(obj).length
+
+/**
+ * @param {Object<string,any>} obj
+ * @return {number}
+ */
+export const size = obj => keys(obj).length
 
 /**
  * @param {Object<string,any>} obj
@@ -70,6 +77,7 @@ export const some = (obj, f) => {
  * @param {Object|undefined} obj
  */
 export const isEmpty = obj => {
+  // eslint-disable-next-line
   for (const _k in obj) {
     return false
   }
@@ -104,4 +112,4 @@ export const hasProperty = (obj, key) => Object.prototype.hasOwnProperty.call(ob
  * @param {Object<string,any>} b
  * @return {boolean}
  */
-export const equalFlat = (a, b) => a === b || (length(a) === length(b) && every(a, (val, key) => (val !== undefined || hasProperty(b, key)) && b[key] === val))
+export const equalFlat = (a, b) => a === b || (size(a) === size(b) && every(a, (val, key) => (val !== undefined || hasProperty(b, key)) && b[key] === val))
